@@ -67,5 +67,6 @@
 // macOS에 특화된 코드
 #endif
 
+#include "hxType.h"
 
 #endif // !__HX_PCH_H__
