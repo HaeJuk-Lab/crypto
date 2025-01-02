@@ -36,12 +36,14 @@ void hxcSHA1::Update( const uint8_t* data, size_t len )
     partLen = 64 - index;
 
     // 데이터 처리
-    if( len >= partLen ) {
+    if( len >= partLen ) 
+    {
         std::memcpy( &ctx->buffer[index], data, partLen );
-        SHA1_Transform( ctx->state, ctx->buffer );
+        Transform( ctx->state, ctx->buffer );
 
-        for( i = partLen; i + 63 < len; i += 64 ) {
-            SHA1_Transform( ctx->state, &data[i] );
+        for( i = partLen; i + 63 < len; i += 64 ) 
+        {
+            Transform( ctx->state, &data[i] );
         }
         index = 0;
     }
@@ -57,19 +59,22 @@ void hxcSHA1::Final( uint8_t* hash )
     uint8_t finalCount[8];
     uint32_t i;
 
-    for( i = 0; i < 8; i++ ) {
+    for( i = 0; i < 8; i++ ) 
+    {
         finalCount[i] = static_cast<uint8_t>((ctx->count >> ((7 - i) * 8)) & 0xFF);
     }
 
-    SHA1_Update( ctx, reinterpret_cast<const uint8_t*>("\x80"), 1 );
+    Update( reinterpret_cast<const uint8_t*>("\x80"), 1 );
 
-    while( (ctx->count / 8) % 64 != 56 ) {
-        SHA1_Update( ctx, reinterpret_cast<const uint8_t*>("\0"), 1 );
+    while( (ctx->count / 8) % 64 != 56 )
+    {
+        Update( reinterpret_cast<const uint8_t*>("\0"), 1 );
     }
 
-    SHA1_Update( ctx, finalCount, 8 );
+    Update( finalCount, 8 );
 
-    for( i = 0; i < 5; i++ ) {
+    for( i = 0; i < 5; i++ ) 
+    {
         hash[i * 4] = (ctx->state[i] >> 24) & 0xFF;
         hash[i * 4 + 1] = (ctx->state[i] >> 16) & 0xFF;
         hash[i * 4 + 2] = (ctx->state[i] >> 8) & 0xFF;
@@ -87,14 +92,16 @@ void hxcSHA1::Transform( uint32_t state[5], const uint8_t buffer[64] )
 {
     uint32_t a, b, c, d, e, t, W[80];
 
-    for( int i = 0; i < 16; i++ ) {
+    for( int i = 0; i < 16; i++ ) 
+    {
         W[i] = (buffer[i * 4] << 24) |
             (buffer[i * 4 + 1] << 16) |
             (buffer[i * 4 + 2] << 8) |
             (buffer[i * 4 + 3]);
     }
 
-    for( int i = 16; i < 80; i++ ) {
+    for( int i = 16; i < 80; i++ ) 
+    {
         W[i] = W[i - 3] ^ W[i - 8] ^ W[i - 14] ^ W[i - 16];
         W[i] = (W[i] << 1) | (W[i] >> 31);  // 좌측 순환
     }
@@ -106,17 +113,22 @@ void hxcSHA1::Transform( uint32_t state[5], const uint8_t buffer[64] )
     e = state[4];
 
     // 메인 라운드
-    for( int i = 0; i < 80; i++ ) {
-        if( i < 20 ) {
+    for( int i = 0; i < 80; i++ ) 
+    {
+        if( i < 20 ) 
+        {
             t = ((b & c) | ((~b) & d)) + 0x5A827999;
         }
-        else if( i < 40 ) {
+        else if( i < 40 ) 
+        {
             t = (b ^ c ^ d) + 0x6ED9EBA1;
         }
-        else if( i < 60 ) {
+        else if( i < 60 ) 
+        {
             t = ((b & c) | (b & d) | (c & d)) + 0x8F1BBCDC;
         }
-        else {
+        else
+        {
             t = (b ^ c ^ d) + 0xCA62C1D6;
         }
 

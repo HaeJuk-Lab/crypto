@@ -14,30 +14,31 @@
  */
 #include "hxcSEED.h"
 
-hxcSEED:hxcSEED() 
-    : ctx( std::make_unique<hxsSEED_CTX>() ) 
+hxcSEED::hxcSEED() 
+    : m_ctx( std::make_unique<hxsSEED_CTX>() ) 
+    , m_pImpl( std::make_unique<hxcSEEDImpl>() )
 {
 
 }
 
 void hxcSEED::Init( const uint8_t* key, size_t key_len, const uint8_t* iv, bool use_cbc ) 
 {
-    SEED_Init( ctx.get(), key, key_len );
-    ctx->cbc_mode = use_cbc;
-    if( iv && use_cbc ) 
+    m_pImpl->SEED_Init( m_ctx.get(), key, key_len );
+    m_ctx->cbc_mode = use_cbc;
+    if( iv && use_cbc )
     {
-        memcpy( ctx->iv, iv, 16 );
+        memcpy( m_ctx->iv, iv, 16 );
     }
 }
 
 void hxcSEED::Encrypt( const uint8_t* input, uint8_t* output, size_t length ) 
 {
-    SEED_Encrypt( ctx.get(), input, output, length );
+    m_pImpl->SEED_Encrypt( m_ctx.get(), input, output, length );
 }
 
 void hxcSEED::Decrypt( const uint8_t* input, uint8_t* output, size_t length ) 
 {
-    SEED_Decrypt( ctx.get(), input, output, length );
+    m_pImpl->SEED_Decrypt( m_ctx.get(), input, output, length );
 }
 
 size_t hxcSEED::BlockSize() const

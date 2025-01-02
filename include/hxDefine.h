@@ -42,14 +42,14 @@ protected:										\
 #endif 
 
 template<typename T>
-class nxcSingleton
+class hxcSingleton
 {
 protected:
-    nxcSingleton() {}
+    hxcSingleton() {}
 
 public:
-    nxcSingleton( const nxcSingleton& ) = delete;
-    nxcSingleton& operator=( const nxcSingleton& ) = delete;
+    hxcSingleton( const hxcSingleton& ) = delete;
+    hxcSingleton& operator=( const hxcSingleton& ) = delete;
 
     static T& GetInstance()
     {

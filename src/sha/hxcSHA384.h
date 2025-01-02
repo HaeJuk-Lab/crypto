@@ -24,6 +24,7 @@ class hxcSHA384 : public hxcSHA
 
 public:
     hxcSHA384();
+    virtual ~hxcSHA384() = default;
     void Init() override;
     void Update( const uint8_t* data, size_t len ) override;
     void Final( uint8_t* hash ) override;

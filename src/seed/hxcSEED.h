@@ -17,6 +17,7 @@
 
 #include "hxPch.h"
 #include "hxcCipher.hpp"
+#include "hxcSEEDImpl.h"
 
 class hxcSEED : public hxcCipher 
 {
@@ -32,7 +33,8 @@ public:
     size_t BlockSize() const override;
 
 private:
-    std::unique_ptr<hxsSEED_CTX> ctx;  // SEED 컨텍스트를 unique_ptr로 관리
+    std::unique_ptr<hxsSEED_CTX> m_ctx;  // SEED 컨텍스트를 unique_ptr로 관리
+    std::unique_ptr<hxcSEEDImpl> m_pImpl;
 };
 
 #endif // !__HXC_SEED_H__

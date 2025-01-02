@@ -13,8 +13,8 @@
  @brief
  */
 
-#ifndef __NXC_SHA_HPP__
-#define __NXC_SHA_HPP__
+#ifndef __HXC_SHA_HPP__
+#define __HXC_SHA_HPP__
 
  // SHA1 컨텍스트 구조체
 struct hxsSHA1_CTX 
@@ -41,16 +41,19 @@ struct hxsSHA1_CTX
     }
 };
 
-struct hxsSHA256_CTX {
+struct hxsSHA256_CTX 
+{
     uint32_t state[8];     // 상태 변수 (256비트)
     uint64_t count;        // 처리된 비트 수
     uint8_t buffer[64];    // 데이터 버퍼 (512비트)
 
-    hxsSHA256_CTX() {
+    hxsSHA256_CTX() 
+    {
         Reset();
     }
 
-    void Reset() {
+    void Reset() 
+    {
         state[0] = 0x6A09E667;
         state[1] = 0xBB67AE85;
         state[2] = 0x3C6EF372;
@@ -66,16 +69,19 @@ struct hxsSHA256_CTX {
 
 
 // SHA384 컨텍스트 구조체
-struct hxsSHA384_CTX {
+struct hxsSHA384_CTX 
+{
     uint64_t state[8];     // 상태 변수 (384비트)
     uint64_t count;        // 처리된 비트 수
     uint8_t buffer[128];   // 데이터 버퍼 (1024비트)
 
-    hxsSHA384_CTX() {
+    hxsSHA384_CTX() 
+    {
         Reset();
     }
 
-    void Reset() {
+    void Reset()
+    {
         state[0] = 0xCBBB9D5DC1059ED8;
         state[1] = 0x629A292A367CD507;
         state[2] = 0x9159015A3070DD17;
@@ -95,6 +101,7 @@ class hxcSHA
     DECLARE_NO_COPY_CLASS( hxcSHA );
 
 public:
+    hxcSHA() = default ;
     virtual ~hxcSHA() = default;
     virtual void Init() = 0;
     virtual void Update( const uint8_t* data, size_t len ) = 0;
@@ -103,4 +110,4 @@ public:
 };
 
 
-#endif // !__NXC_SHA_HPP__
+#endif // !__HXC_SHA_HPP__

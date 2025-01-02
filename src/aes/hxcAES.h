@@ -17,43 +17,24 @@
 
 #include "hxPch.h"
 #include "hxcCipher.hpp"
+#include "hxcAESImpl.h"
 
 class hxcAES : public hxcCipher 
 {
     DECLARE_NO_COPY_CLASS( hxcAES );
 
-
 public:
-    hxcAES() : ctx( std::make_unique<hxsAES_CTX>() ) {}
+    hxcAES();
     virtual ~hxcAES() = default; 
 
-    void Init( const uint8_t* key, size_t key_len, const uint8_t* iv = nullptr, bool use_cbc = false ) override 
-    {
-        AES_Init( ctx.get(), key, key_len );
-        ctx->cbc_mode = use_cbc;
-        if( iv && use_cbc ) {
-            memcpy( ctx->iv, iv, 16 );
-        }
-    }
-
-    void Encrypt( const uint8_t* input, uint8_t* output, size_t length ) override 
-    {
-        AES_Encrypt( ctx.get(), input, output, length );
-    }
-
-    void Decrypt( const uint8_t* input, uint8_t* output, size_t length ) override
-    {
-        AES_Decrypt( ctx.get(), input, output, length );
-    }
-
-    size_t BlockSize() const override 
-    {
-        return 16;
-    }
+    void Init( const uint8_t* key, size_t key_len, const uint8_t* iv = nullptr, bool use_cbc = false ) override;
+    void Encrypt( const uint8_t* input, uint8_t* output, size_t length ) override;
+    void Decrypt( const uint8_t* input, uint8_t* output, size_t length ) override;
+    size_t BlockSize() const override;;
 
 private:
-    std::unique_ptr<hxsAES_CTX> ctx;  // AES 컨텍스트를 unique_ptr로 관리
-
+    std::unique_ptr<hxsAES_CTX> m_ctx;  // AES 컨텍스트를 unique_ptr로 관리
+    std::unique_ptr<hxcAESImpl> m_pImpl;
 };
 
 

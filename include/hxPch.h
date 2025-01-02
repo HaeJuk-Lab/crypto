@@ -60,10 +60,10 @@
 #include <windows.h>
 #include <tchar.h>
 
-#elif defined(__NX_LINUX__)
+#elif defined(__HX_LINUX__)
 // LINUX 에 특화된 코드 
 
-#elif defined(__NX_MACOS__)
+#elif defined(__HX_MACOS__)
 // macOS에 특화된 코드
 #endif
 

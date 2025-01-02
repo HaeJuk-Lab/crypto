@@ -17,6 +17,7 @@
 
 #include "hxPch.h"
 #include "hxcCipher.hpp"
+#include "hxcARIAImpl.h"
 
 class hxcARIA : public hxcCipher 
 {
@@ -31,7 +32,8 @@ public:
     size_t BlockSize() const override;
 
 private:
-    std::unique_ptr<hxsARIA_CTX> ctx;  // ARIA 컨텍스트를 unique_ptr로 관리
+    std::unique_ptr<hxsARIA_CTX> m_ctx;    // ARIA 컨텍스트를 unique_ptr로 관리
+    std::unique_ptr<hxcARIAImpl> m_pImpl;  // ARIA IMPL
 
 };
 
