@@ -27,9 +27,13 @@ public:
     hxcAES();
     virtual ~hxcAES() = default; 
 
-    void Init( const uint8_t* key, size_t key_len, const uint8_t* iv = nullptr, bool use_cbc = false ) override;
-    void Encrypt( const uint8_t* input, uint8_t* output, size_t length ) override;
-    void Decrypt( const uint8_t* input, uint8_t* output, size_t length ) override;
+    ErrCode Init( const uint8_t* key, size_t key_len, const uint8_t* iv = nullptr, bool use_cbc = false );
+
+    ErrCode Generatorkey( INOUT uint8_t* _pBuffer, size_t _nkeylen );
+    ErrCode CheckInitOpValues() override;
+
+    ErrCode Encrypt( const uint8_t* input, uint8_t* output, size_t length ) override;
+    ErrCode Decrypt( const uint8_t* input, uint8_t* output, size_t length ) override;
     size_t BlockSize() const override;;
 
 private:

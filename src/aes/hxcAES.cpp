@@ -26,14 +26,35 @@ hxcAES::hxcAES()
 
 }
 
-void hxcAES::Init( const uint8_t* key, size_t key_len, const uint8_t* iv, bool use_cbc )
+ErrCode hxcAES::Init( const uint8_t* key, size_t key_len, const uint8_t* iv, bool use_cbc )
 {
+    ErrCode nRet = Err_Success;
+
     m_ctx->Init( key, key_len, iv );
     m_ctx->cbc_mode = use_cbc;
+
+    return nRet;
 }
 
-void hxcAES::Encrypt( const uint8_t* input, uint8_t* output, size_t length )
+ErrCode hxcAES::Generatorkey( INOUT uint8_t* _ppBuffer, size_t _nkeylen )
 {
+    ErrCode nRet = Err_Success;
+
+    return nRet;
+}
+
+ErrCode hxcAES::CheckInitOpValues()
+{
+    ErrCode nRet = Err_Success;
+
+    return nRet;
+}
+
+
+ErrCode hxcAES::Encrypt( const uint8_t* input, uint8_t* output, size_t length )
+{
+    ErrCode nRet = Err_Success;
+
     for( size_t i = 0; i < length; i += 16 ) 
     {
         if( m_ctx->cbc_mode )
@@ -55,10 +76,15 @@ void hxcAES::Encrypt( const uint8_t* input, uint8_t* output, size_t length )
             std::memcpy( output + i, m_ctx->State, 16 );
         }
     }
+
+    return nRet;
 }
 
-void hxcAES::Decrypt( const uint8_t* input, uint8_t* output, size_t length )
+ErrCode hxcAES::Decrypt( const uint8_t* input, uint8_t* output, size_t length )
 {
+    ErrCode nRet = Err_Success;
+
+
     uint8_t temp[16];
     for( size_t i = 0; i < length; i += 16 )
     {
@@ -80,6 +106,8 @@ void hxcAES::Decrypt( const uint8_t* input, uint8_t* output, size_t length )
             std::memcpy( output + i, m_ctx->State, 16 );
         }
     }
+
+    return nRet;
 }
 
 size_t hxcAES::BlockSize() const

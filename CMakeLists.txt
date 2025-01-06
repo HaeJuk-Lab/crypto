@@ -87,7 +87,10 @@ endif()
 
 # 소스 파일 설정
 file(GLOB_RECURSE SRC_FILES src/*.cpp)
-file(GLOB_RECURSE HEADER_FILES include/*.h)
+file(GLOB_RECURSE HEADER_FILES 
+        include/*.h
+        export/*.h
+)
 
 # 라이브러리 생성
 add_library(${LIBRARY_OUTPUT_NAME} SHARED ${SRC_FILES})

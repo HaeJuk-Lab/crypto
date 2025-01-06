@@ -21,17 +21,135 @@ hxcARIA::hxcARIA()
 
 }
 
-void hxcARIA::Init( const uint8_t* key, size_t key_len, const uint8_t* iv, bool use_cbc )
+ErrCode hxcARIA::Init( const hxsAria* _pKey )
 {
-    m_ctx->Init( key, key_len, iv );
-    m_ctx->cbc_mode = use_cbc;
+    ErrCode nRet = Err_Success;
+
+    m_ctx->eMode = _pKey->eMode;
+    if( hxeAriaKeySize::eAria128 == _pKey->eKeySize )
+    {
+        const hxsAria128* pKey = reinterpret_cast<const  hxsAria128*>(_pKey);
+        m_ctx->Init( pKey->nkey, pKey->eKeySize, pKey->nIv );
+    }
+    else if( hxeAriaKeySize::eAria192 == _pKey->eKeySize )
+    {
+        const hxsAria192* pKey = reinterpret_cast<const  hxsAria192*>(_pKey);
+        m_ctx->Init( pKey->nkey, pKey->eKeySize, pKey->nIv );
+    }
+    else if( hxeAriaKeySize::eAria256 == _pKey->eKeySize )
+    {
+        const hxsAria256* pKey = reinterpret_cast<const  hxsAria256*>(_pKey);
+        m_ctx->Init( pKey->nkey, pKey->eKeySize, pKey->nIv );
+    }
+    
+    return nRet;
 }
 
-void hxcARIA::Encrypt( const uint8_t* input, uint8_t* output, size_t length ) 
+ErrCode hxcARIA::Generatorkey( INOUT hxsAria* _pKey, size_t _nlength )
 {
+    ErrCode nRet = Err_Success;
+    
+    //-----------------------------------------------------------------------------------------------
+    // 초기화 체크 
+    nRet = CheckInitOpValues();
+    if( Err_Success != nRet )
+    {
+        return nRet;
+    }
+
+    _pKey->eMode = hxeAriaMode::eAriaCBCMode;
+
+    if( hxeAriaKeySize::eAria128 == _nlength )
+    {
+        hxsAria128* pKey = reinterpret_cast<hxsAria128*>(_pKey);
+        if( nullptr != pKey )
+        {
+            //---------------------------------------------------------------------------
+            // 초기화 
+            std::fill( std::begin( pKey->nkey ), std::end( pKey->nkey ), 0 );
+            std::fill( std::begin( pKey->nIv ), std::end( pKey->nIv ), 0 );
+            pKey->eKeySize = hxeAriaKeySize::eAria128;
+
+            //---------------------------------------------------------------------------
+            // Gen 16Byte Random Key    
+            this->GeneratorRandomData( pKey->nkey, _nlength );
+
+            //---------------------------------------------------------------------------
+            // Gen 16Byte Random Iv
+            this->GeneratorRandomData( pKey->nIv, ARIA_BLOCK_MODE_IV_SIZE );
+
+            return nRet;
+        }
+    }
+    else if( hxeAriaKeySize::eAria192 == _nlength )
+    {
+        hxsAria192* pKey = reinterpret_cast<hxsAria192*>(_pKey);
+        if( nullptr != pKey )
+        {
+            //---------------------------------------------------------------------------
+            // 초기화 
+            std::fill( std::begin( pKey->nkey ), std::end( pKey->nkey ), 0 );
+            std::fill( std::begin( pKey->nIv ), std::end( pKey->nIv ), 0 );
+            pKey->eKeySize = hxeAriaKeySize::eAria192;
+
+            //---------------------------------------------------------------------------
+            // Gen 16Byte Random Key    
+            this->GeneratorRandomData( pKey->nkey, _nlength );
+
+            //---------------------------------------------------------------------------
+            // Gen 16Byte Random Iv
+            this->GeneratorRandomData( pKey->nIv, ARIA_BLOCK_MODE_IV_SIZE );
+
+            return nRet;
+        }
+    }
+    else if( hxeAriaKeySize::eAria256 == _nlength )
+    {
+        hxsAria256* pKey = reinterpret_cast<hxsAria256*>(_pKey);
+        if( nullptr != pKey )
+        {
+            //---------------------------------------------------------------------------
+            // 초기화 
+            std::fill( std::begin( pKey->nkey ), std::end( pKey->nkey ), 0 );
+            std::fill( std::begin( pKey->nIv ), std::end( pKey->nIv ), 0 );
+            pKey->eKeySize = hxeAriaKeySize::eAria256;
+
+            //---------------------------------------------------------------------------
+            // Gen 16Byte Random Key    
+            this->GeneratorRandomData( pKey->nkey, _nlength );
+
+            //---------------------------------------------------------------------------
+            // Gen 16Byte Random Iv
+            this->GeneratorRandomData( pKey->nIv, ARIA_BLOCK_MODE_IV_SIZE );
+
+            return nRet;
+        }
+    }
+    return nRet;
+}
+
+ErrCode hxcARIA::CheckInitOpValues()
+{
+    ErrCode nRet = Err_Success;
+
+    return nRet;
+}
+
+ErrCode hxcARIA::Encrypt( const uint8_t* input, uint8_t* output, size_t length )
+{
+    ErrCode nRet = Err_Success;
+
+    //-----------------------------------------------------------------------------------------------
+    // 초기화 체크 
+    nRet = CheckInitOpValues();
+    if( Err_Success != nRet )
+    {
+        return nRet;
+    }
+
     for( size_t i = 0; i < length; i += 16 )
     {
-        if( m_ctx->cbc_mode )
+        if( hxeAriaMode::eAriaCBCMode == m_ctx->eMode )
         { 
             // CBC 모드 암호화
             for( int j = 0; j < 16; j++ )
@@ -50,17 +168,29 @@ void hxcARIA::Encrypt( const uint8_t* input, uint8_t* output, size_t length )
             std::memcpy( output + i, m_ctx->State, 16 );
         }
     }
+    return nRet;
 }
 
-void hxcARIA::Decrypt( const uint8_t* input, uint8_t* output, size_t length ) 
+ErrCode hxcARIA::Decrypt( const uint8_t* input, uint8_t* output, size_t length )
 {
+    ErrCode nRet = Err_Success;
+
+    //-----------------------------------------------------------------------------------------------
+    // 초기화 체크 
+    nRet = CheckInitOpValues();
+    if( Err_Success != nRet )
+    {
+        return nRet;
+    }
+
+
     uint8_t temp[16];
     for( size_t i = 0; i < length; i += 16 )
     {
         std::memcpy( temp, input + i, 16 );
         std::memcpy( m_ctx->State, input + i, 16 );
         m_pImpl->ARIA_DecryptBlock( m_ctx->State, m_ctx->RoundKeys.data(), m_ctx->NumRounds );
-        if( m_ctx->cbc_mode )
+        if( hxeAriaMode::eAriaCBCMode == m_ctx->eMode )
         {
             // CBC 모드 복호화
             for( int j = 0; j < 16; j++ ) 
@@ -75,6 +205,7 @@ void hxcARIA::Decrypt( const uint8_t* input, uint8_t* output, size_t length )
             std::memcpy( output + i, m_ctx->State, 16 );
         }
     }
+    return nRet;
 }
 
 size_t hxcARIA::BlockSize() const 

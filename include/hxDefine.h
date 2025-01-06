@@ -13,10 +13,8 @@
  @brief
  */
 
-
 #ifndef __HX_DEFINE_H__
 #define __HX_DEFINE_H__
-
 
 #define DECLARE_NO_ASSIGN_CLASS(classname)	\
 private:										\

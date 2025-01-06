@@ -21,24 +21,72 @@ hxcSEED::hxcSEED()
 
 }
 
-void hxcSEED::Init( const uint8_t* key, size_t key_len, const uint8_t* iv, bool use_cbc ) 
+ErrCode hxcSEED::Init( const uint8_t* key, size_t key_len, const uint8_t* iv, bool use_cbc )
 {
+    ErrCode nRet = Err_Success;
     m_pImpl->SEED_Init( m_ctx.get(), key, key_len );
     m_ctx->cbc_mode = use_cbc;
     if( iv && use_cbc )
     {
         memcpy( m_ctx->iv, iv, 16 );
     }
+    return nRet;
 }
 
-void hxcSEED::Encrypt( const uint8_t* input, uint8_t* output, size_t length ) 
+ErrCode hxcSEED::Generatorkey(INOUT uint8_t* _ppBuffer, size_t _nkeylen )
 {
+    ErrCode nRet = Err_Success;
+    //-----------------------------------------------------------------------------------------------
+    // 초기화 체크 
+    nRet = CheckInitOpValues();
+    if( Err_Success != nRet )
+    {
+        return nRet;
+    }
+
+
+    return nRet;
+}
+
+ErrCode hxcSEED::CheckInitOpValues()
+{
+    ErrCode nRet = Err_Success;
+
+    return nRet;
+}
+
+ErrCode hxcSEED::Encrypt( const uint8_t* input, uint8_t* output, size_t length )
+{
+    ErrCode nRet = Err_Success;
+
+    //-----------------------------------------------------------------------------------------------
+    // 초기화 체크 
+    nRet = CheckInitOpValues();
+    if( Err_Success != nRet )
+    {
+        return nRet;
+    }
+
     m_pImpl->SEED_Encrypt( m_ctx.get(), input, output, length );
+    
+    return nRet;
 }
 
-void hxcSEED::Decrypt( const uint8_t* input, uint8_t* output, size_t length ) 
+ErrCode hxcSEED::Decrypt( const uint8_t* input, uint8_t* output, size_t length )
 {
+    ErrCode nRet = Err_Success;
+    
+    //-----------------------------------------------------------------------------------------------
+    // 초기화 체크 
+    nRet = CheckInitOpValues();
+    if( Err_Success != nRet )
+    {
+        return nRet;
+    }
+
     m_pImpl->SEED_Decrypt( m_ctx.get(), input, output, length );
+
+    return nRet;
 }
 
 size_t hxcSEED::BlockSize() const

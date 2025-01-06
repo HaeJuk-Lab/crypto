@@ -9,36 +9,53 @@
 *
 *******************************************************************************/
 /**
- @file		hxcSEED.h
+ @file		hxcARIA_AVX.h
  @brief
  */
-#ifndef __HXC_SEED_H__
-#define __HXC_SEED_H__
+#ifndef __HXC_ARIA_AVX_H__
+#define __HXC_ARIA_AVX_H__
 
 #include "hxPch.h"
 #include "hxcCipher.hpp"
-#include "hxcSEEDImpl.h"
+#include "../exrpot/hxAriaExport.h"
 
-class hxcSEED : public hxcCipher 
+class hxcARIA_AVX : public hxcCipher
 {
-    DECLARE_NO_COPY_CLASS( hxcSEED );
+	DECLARE_NO_COPY_CLASS( hxcARIA_AVX );
 
 public:
-    hxcSEED();
-    virtual ~hxcSEED() = default; 
-
-    ErrCode Init( const uint8_t* key, size_t key_len, const uint8_t* iv = nullptr, bool use_cbc = false );
-
-    ErrCode Generatorkey( INOUT uint8_t* _pBuffer, size_t _nkeylen );
+	hxcARIA_AVX();
+	virtual ~hxcARIA_AVX();
+  
+    ErrCode Init( const hxsAria* _pKey );
+    ErrCode Generatorkey( INOUT hxsAria* _pKey);
     ErrCode CheckInitOpValues() override;
 
     ErrCode Encrypt( const uint8_t* input, uint8_t* output, size_t length ) override;
     ErrCode Decrypt( const uint8_t* input, uint8_t* output, size_t length ) override;
+    
     size_t BlockSize() const override;
 
+
 private:
-    std::unique_ptr<hxsSEED_CTX> m_ctx;  // SEED 컨텍스트를 unique_ptr로 관리
-    std::unique_ptr<hxcSEEDImpl> m_pImpl;
+    ErrCode EncryptBlock( uint8_t* block );
+    ErrCode DecryptBlock( uint8_t* block );
+
+    void SubBytes_AVX( uint8_t* block );
+    void MixColumns_AVX( uint8_t* block );
+    void ShiftRows_AVX( uint8_t* block );
+    void AddRoundKey_AVX( uint8_t* block, const uint8_t* roundKey );
+
+    bool IsSupportAVX();
+    bool GetSupportAVX();
+
+private:
+    int     m_nNumRounds;
+    uint8_t m_nRoundKeys[16 * 15];  // 최대 16라운드 * 4워드
+    uint8_t m_nIV[16];
+    hxeAriaMode m_eMode;
+    bool    m_IsSupport;
 };
 
-#endif // !__HXC_SEED_H__
+
+#endif //!__HXC_ARIA_AVX_H__ 

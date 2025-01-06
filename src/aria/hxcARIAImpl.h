@@ -9,12 +9,13 @@
 *
 *******************************************************************************/
 /**
- @file		hxcAESImpl.h
+ @file		hxcARIAImpl.h
  @brief
  */
 #ifndef __HXC_ARIA_IMPL_H__
 #define __HXC_ARIA_IMPL_H__
 #include "hxPch.h"
+#include "../exrpot/hxAriaExport.h"
 
 static const uint8_t sbox[256] =
 {
@@ -62,32 +63,32 @@ struct hxsARIA_CTX
 {
     uint8_t State[4][4];                  // 상태 배열 (128비트 블록)
     std::array<uint32_t, 16 * 15> RoundKeys;  // 최대 15 라운드 * 4(32비트 키)
-    uint8_t IV[16];                       // 초기화 벡터 (CBC 모드용)
+    uint8_t IV[ARIA_BLOCK_MODE_IV_SIZE];       // 초기화 벡터 (CBC 모드용)
     uint8_t NumRounds;                    // 라운드 수 (12, 14, 16)
-    bool cbc_mode;                        // CBC 모드 플래그
+    hxeAriaMode eMode;                    // CBC 모드 플래그
 
     hxsARIA_CTX() 
     {
         std::memset( State, 0, sizeof( State ) );
         std::memset( IV, 0, sizeof( IV ) );
         NumRounds = 0;
-        cbc_mode = false;
+        eMode = hxeAriaMode::eAriaCBCMode;
     }
 
     void Init( const uint8_t* key, size_t key_len, const uint8_t* iv ) 
     {
-        if( key_len == 16 )     
-            NumRounds = 12;  // ARIA-128
-        else if( key_len == 24 ) 
-            NumRounds = 14;  // ARIA-192
-        else if( key_len == 32 ) 
-            NumRounds = 16;  // ARIA-256
+        if( key_len == hxeAriaKeySize::eAria128 )
+            NumRounds = hxeAriaRoundKey::eAria128RoundNum;  // 128비트 키
+        else if( key_len == hxeAriaKeySize::eAria192 )
+            NumRounds = hxeAriaRoundKey::eAria192RoundNum;  // 192비트 키
+        else if( key_len == hxeAriaKeySize::eAria256 )
+            NumRounds = hxeAriaRoundKey::eAria256RoundNum;  // 256비트 키
         else throw std::runtime_error( "Invalid key length" );
 
         KeyExpansion( key, key_len );
         if( iv ) 
         {
-            std::memcpy( IV, iv, 16 );
+            std::memcpy( IV, iv, ARIA_BLOCK_MODE_IV_SIZE );
         }
     }
 

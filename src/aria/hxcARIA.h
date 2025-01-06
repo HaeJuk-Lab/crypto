@@ -18,6 +18,7 @@
 #include "hxPch.h"
 #include "hxcCipher.hpp"
 #include "hxcARIAImpl.h"
+#include "../exrpot/hxAriaExport.h"
 
 class hxcARIA : public hxcCipher 
 {
@@ -26,9 +27,12 @@ class hxcARIA : public hxcCipher
 public:
     hxcARIA();
     virtual ~hxcARIA() = default;
-    void Init( const uint8_t* key, size_t key_len, const uint8_t* iv = nullptr, bool use_cbc = false ) override;
-    void Encrypt( const uint8_t* input, uint8_t* output, size_t length ) override;
-    void Decrypt( const uint8_t* input, uint8_t* output, size_t length ) override;
+    ErrCode Init( const hxsAria* _pKey );
+    ErrCode Generatorkey( INOUT hxsAria* _pKey, size_t _nlength );
+
+    ErrCode CheckInitOpValues() override;
+    ErrCode Encrypt( const uint8_t* input, uint8_t* output, size_t length ) override;
+    ErrCode Decrypt( const uint8_t* input, uint8_t* output, size_t length ) override;
     size_t BlockSize() const override;
 
 private:
