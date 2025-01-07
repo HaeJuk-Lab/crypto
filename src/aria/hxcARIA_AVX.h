@@ -17,7 +17,7 @@
 
 #include "hxPch.h"
 #include "hxcCipher.hpp"
-#include "../exrpot/hxAriaExport.h"
+#include "../export/hxAriaExport.h"
 
 class hxcARIA_AVX : public hxcCipher
 {

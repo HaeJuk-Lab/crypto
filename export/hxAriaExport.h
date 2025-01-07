@@ -12,8 +12,8 @@
  @file		hxcAriaExport.h
  @brief
  */
-#ifndef __HXC_ARIA_EXPROT_H__
-#define __HXC_ARIA_EXPROT_H__
+#ifndef __HXC_ARIA_EXPORT_H__
+#define __HXC_ARIA_EXPORT_H__
 
 
 constexpr auto ARIA_BLOCK_MODE_IV_SIZE = 16;
@@ -62,4 +62,4 @@ struct hxsAria256 : public hxsAria
 
 
 
-#endif //!__HXC_ARIA_EXPROT_H__
+#endif //!__HXC_ARIA_EXPORT_H__

@@ -15,7 +15,7 @@
 #ifndef __HXC_ARIA_IMPL_H__
 #define __HXC_ARIA_IMPL_H__
 #include "hxPch.h"
-#include "../exrpot/hxAriaExport.h"
+#include "../export/hxAriaExport.h"
 
 static const uint8_t sbox[256] =
 {

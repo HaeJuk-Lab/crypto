@@ -13,7 +13,7 @@
  @brief
  */
 #include "hxcDrbgAes.h"
-#include "../exrpot/hxAesExrpot.h"
+#include "../export/hxAesExport.h"
 #include "../aes/hxcAES.h"
 #include "../noisecollector/hxcNoiseCollector.h"
 

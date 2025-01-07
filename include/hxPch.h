@@ -16,7 +16,7 @@
 #ifndef __HX_PCH_H__
 #define __HX_PCH_H__
 
-#include "../exrpot/hxErrCode.h"
+#include "../export/hxErrCode.h"
 #include "hxDefine.h"
 
 #include <algorithm>

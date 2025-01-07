@@ -12,8 +12,8 @@
  @file		hxcAesExport.h
  @brief
  */
-#ifndef __HXC_AES_EXPROT_H__
-#define __HXC_AES_EXPROT_H__
+#ifndef __HXC_AES_EXPORT_H__
+#define __HXC_AES_EXPORT_H__
 
 constexpr auto AES_BLOCK_MODE_IV_SIZE = 16;
 
@@ -21,4 +21,4 @@ constexpr auto AES_BLOCK_MODE_IV_SIZE = 16;
 
 
 
-#endif //!__HXC_AES_EXPROT_H__
+#endif //!__HXC_AES_EXPORT_H__

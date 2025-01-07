@@ -17,7 +17,7 @@
 
 #include "hxPch.h"
 #include "hxcDrbg.h"
-#include "../exrpot/hxAriaExport.h"
+#include "../export/hxAriaExport.h"
 
 class hxcARIA;
 class hxcNoiseCollector;

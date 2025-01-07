@@ -30,7 +30,7 @@ public:
     virtual ErrCode CollectHeapData( std::vector<uint8_t>& _vNoise ) = 0;
     virtual ErrCode CollectRandomDevice( std::vector<uint8_t>& _vNoise ) = 0;
     virtual ErrCode CollectProcessName( std::vector<uint8_t>& _vNoise ) = 0;
-    virtual ErrCode Reset();
+    virtual ErrCode Reset() = 0;
 };
 
 #endif // !__HXC_NOISE_COLLECTOR_H__
