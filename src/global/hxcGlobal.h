@@ -9,26 +9,21 @@
 *
 *******************************************************************************/
 /**
- @file		hxcRandom.h
+ @file		hxcGlobal.h
  @brief
  */
-#ifndef __HXC_RANDOM_H__
-#define __HXC_RANDOM_H__
 
-#include "hxPch.h"
+#ifndef __HXC_GLOBAL_H__
+#define __HXC_GLOBAL_H__
 
-class hxcRandom
+#include "hxpch.h"
+
+class hxcGlobal
 {
-	DECLARE_NO_COPY_CLASS( hxcRandom );
-
 public:
-	hxcRandom();
-	virtual ~hxcRandom();
-
-
+	hxcGlobal();
+	~hxcGlobal();
 };
 
+#endif // !__HXC_GLOBAL_H__
 
-
-
-#endif //!__HXC_RANDOM_H__

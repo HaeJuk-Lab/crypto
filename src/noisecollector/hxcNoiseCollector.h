@@ -9,17 +9,27 @@
 *
 *******************************************************************************/
 /**
- @file		hxcRandom.cpp
+ @file		hxcNoiseCollector.h
  @brief
  */
-#include "hxcRandom.h"
+#ifndef __HXC_NOISE_COLLECTOR_H__
+#define __HXC_NOISE_COLLECTOR_H__
 
-hxcRandom::hxcRandom()
+#include "hxPch.h"
+
+class hxcNoiseCollectorImpl;
+
+class hxcNoiseCollector
 {
+	DECLARE_NO_COPY_CLASS( hxcNoiseCollector );
 
-}
+public:
+	hxcNoiseCollector();
+	virtual ~hxcNoiseCollector();
+	std::vector<uint8_t> CollectNoise(int _nRepeatCount = 0 );
 
-hxcRandom::~hxcRandom()
-{
+private:
+	std::unique_ptr<hxcNoiseCollectorImpl> m_pImpl;
+};
 
-}
+#endif //! __HXC_NOISE_COLLECTOR_H__

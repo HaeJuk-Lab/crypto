@@ -21,21 +21,12 @@ public:
     hxcCipher() = default; 
     virtual ~hxcCipher() = default;
 
-    // 초기화
-    virtual ErrCode Init( const uint8_t* key, size_t key_len, const uint8_t* iv = nullptr, bool use_cbc = false ) 
-    {
-        return Err_Success;
-    };
-
-    // 키 생성
-    virtual ErrCode Generatorkey( INOUT uint8_t* _pBuffer, size_t _nlength ) { return Err_Success; };
-    
     // 초기화, 셀프테스트 통과, CPU 지원 여부 확인 
     virtual ErrCode CheckInitOpValues() = 0 ;
 
     // 암호화 및 복호화
-    virtual ErrCode Encrypt( const uint8_t* input, OUT uint8_t* output, size_t length ) = 0;
-    virtual ErrCode Decrypt( const uint8_t* input, OUT uint8_t* output, size_t length ) = 0;
+    virtual ErrCode Encrypt( const uint8_t* _pInput, OUT uint8_t* _pOutput, size_t _nlength ) = 0;
+    virtual ErrCode Decrypt( const uint8_t* _pInput, OUT uint8_t* _pOutput, size_t _nlength ) = 0;
 
     // 블록 크기 반환
     virtual size_t BlockSize() const = 0;

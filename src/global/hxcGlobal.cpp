@@ -9,40 +9,16 @@
 *
 *******************************************************************************/
 /**
- @file		main.cpp
+ @file		hxcGlobal.cpp
  @brief
  */
-
-#include "../include/hxPch.h"
-#include "global/hxcGlobal.h"
-
-
-#ifdef __HX_WINDOWS__
-
-BOOL APIENTRY DllMain( HMODULE hModule,	DWORD  ul_reason_for_call, LPVOID lpReserved)
+#include "hxcGlobal.h"
+hxcGlobal::hxcGlobal()
 {
-	switch( ul_reason_for_call )
-	{
-		case DLL_PROCESS_ATTACH:
-		{
-			DisableThreadLibraryCalls( hModule ); 
-		} break;
-		case DLL_THREAD_ATTACH: {} break;
-		case DLL_THREAD_DETACH: {} break;
-		case DLL_PROCESS_DETACH:
-		{
 
-		} break;
-	}
-	return TRUE;
 }
 
-#else
-
-int main( int argc, char** argv )
+hxcGlobal::~hxcGlobal()
 {
-	return 0;
+
 }
-
-#endif 
-
